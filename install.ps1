@@ -33,11 +33,38 @@ try {
   Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue
 }
 
-$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
-if (($userPath -split ";") -notcontains $InstallDir) {
-  [Environment]::SetEnvironmentVariable("Path", "$userPath;$InstallDir", "User")
-  $env:Path = "$env:Path;$InstallDir"
-  Write-Host "Added $InstallDir to your user PATH (restart the terminal if needed)."
+Write-Host "Installed $Bin to $dest"
+
+# API key before PATH / env updates.
+$apiKey = ""
+try {
+  $apiKey = Read-Host "Enter your GoodSender API key (press Enter to skip)"
+} catch {
+  $apiKey = ""
 }
 
-Write-Host "Installed $Bin to $dest"
+$existingKey = [Environment]::GetEnvironmentVariable("GOODSENDER_API_KEY", "User")
+if ([string]::IsNullOrWhiteSpace($apiKey)) {
+  if ([string]::IsNullOrWhiteSpace($existingKey)) {
+    Write-Host "Skipped. Set GOODSENDER_API_KEY to a valid API key for the CLI to work properly."
+  } else {
+    $apiKey = $existingKey
+    Write-Host "Skipped; keeping the API key already configured in your user environment."
+  }
+} else {
+  [Environment]::SetEnvironmentVariable("GOODSENDER_API_KEY", $apiKey, "User")
+  $env:GOODSENDER_API_KEY = $apiKey
+  Write-Host "Set GOODSENDER_API_KEY in your user environment."
+}
+
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+if ([string]::IsNullOrEmpty($userPath)) { $userPath = "" }
+$parts = @($userPath -split ";" | Where-Object { $_ -ne "" })
+if ($parts -notcontains $InstallDir) {
+  $newPath = if ($userPath) { "$userPath;$InstallDir" } else { $InstallDir }
+  [Environment]::SetEnvironmentVariable("Path", $newPath, "User")
+  $env:Path = "$env:Path;$InstallDir"
+  Write-Host "Added $InstallDir to your user PATH (restart the terminal if needed)."
+} else {
+  Write-Host "Install dir already on user PATH."
+}
