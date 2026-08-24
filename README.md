@@ -15,6 +15,7 @@
 - 👥 Organize recipients into groups and reference them all by group name.
 - 🏷️ Manage sender identities (`From:` header) and reference them by name.
 - 📊 Monitor email health metrics.
+- 📰 Maintain the blog: settings, custom domain, drafts, publish, preview, and email broadcast.
 
 ## Installation
 
