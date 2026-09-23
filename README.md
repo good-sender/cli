@@ -16,6 +16,9 @@
 - 🏷️ Manage sender identities (`From:` header) and reference them by name.
 - 📊 Monitor email health metrics.
 - 📰 Maintain the blog: settings, custom domain, drafts, publish, preview, and email broadcast.
+  - Choose where each post goes when it's published: dev.to, Hashnode, X, LinkedIn, Bluesky, Mastodon and your newsletter.
+  - See exactly what will be posted to each account, and which destinations can't deliver (not connected, no public address), before anything goes out.
+  - Re-announce a published post to X, LinkedIn, Bluesky or Mastodon.
 
 ## Installation
 
@@ -69,6 +72,12 @@ irm https://raw.githubusercontent.com/good-sender/cli/main/install.ps1 | iex
   > - For all recipients who haven't received an email with consent request, will request their consent for receiving emails from you
   > - Send emails to all recipients who granted their email consent
   > - Monitor all recipients with pending consent and send the email as soon as they grant it
+
+  #### Publish my "Release notes" draft and announce it on X and LinkedIn
+  > ℹ️ This will:
+  > - Select X and LinkedIn for the post (both must be connected in GoodSender Integrations)
+  > - Publish the post to the blog, then announce it once on each selected account and send the newsletter if it's selected
+  > - In an AI client that asks before acting, the plan (each account and the exact text and link it will post) is shown for confirmation first
 
 </details>
 
